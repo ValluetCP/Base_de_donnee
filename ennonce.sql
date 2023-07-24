@@ -132,18 +132,26 @@ INSERT INTO manger (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (4,7,
 --29-- Trier les stagiaires en affichant les femmes en premier et en classant les couleurs des yeux dans l'ordre alphabétique
 
 --30-- Limiter l'affichage d'une requête de sélection de tous les stagiaires aux 3 premires résultats
+SELECT * FROM stagiaires LIMIT 0, 3;
 
 --31-- Limiter l'affichage d'une requête de sélection de tous les stagiaires à partir du 3ème résultat et des 5 suivants
+SELECT * FROM stagiaires LIMIT 5 OFFSET 2;
+-- ou SELECT * FROM stagiaires LIMIT 2, 5;
 
 --32-- Afficher les 4 premiers stagiaires qui ont les yeux marron
+SELECT * FROM stagiaires WHERE yeux = 'marron' LIMIT 4;
 
 --33-- Pareil mais en triant les prénoms dans l'ordre alphabétique
+SELECT * FROM stagiaires WHERE yeux = 'marron' ORDER BY prenom ASC LIMIT 4;
 
 --34-- Compter le nombre de stagiaires
+SELECT COUNT(*) AS nombre_stagiaires FROM stagiaires;
 
 --35-- Compter le nombre de stagiaires hommes mais en changeant le nom de la colonne de résultat par *nb_stagiaires_H*
+SELECT COUNT(*) AS nb_stagiaires_H FROM stagiaires WHERE genre = 'm';
 
 --36-- Compter le nombre de couleurs d'yeux différentes
+SELECT COUNT(*) AS couleurs_de_yeux FROM stagiaires;
 
 --37-- Afficher le prénom et les yeux du stagiaire qui a l'id le plus petit
 
