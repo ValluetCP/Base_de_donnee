@@ -133,6 +133,7 @@ INSERT INTO manger (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (4,7,
 
 --30-- Limiter l'affichage d'une requête de sélection de tous les stagiaires aux 3 premires résultats
 SELECT * FROM stagiaires LIMIT 0, 3;
+-- SELECT * FROM stagiaires LIMIT 3;
 
 --31-- Limiter l'affichage d'une requête de sélection de tous les stagiaires à partir du 3ème résultat et des 5 suivants
 SELECT * FROM stagiaires LIMIT 5 OFFSET 2;
@@ -146,22 +147,44 @@ SELECT * FROM stagiaires WHERE yeux = 'marron' ORDER BY prenom ASC LIMIT 4;
 
 --34-- Compter le nombre de stagiaires
 SELECT COUNT(*) AS nombre_stagiaires FROM stagiaires;
-
+-- AS : attribuer un nom au tableau
+-- COUNT(*) : compter le nombre
 --35-- Compter le nombre de stagiaires hommes mais en changeant le nom de la colonne de résultat par *nb_stagiaires_H*
 SELECT COUNT(*) AS nb_stagiaires_H FROM stagiaires WHERE genre = 'm';
 
 --36-- Compter le nombre de couleurs d'yeux différentes
-SELECT COUNT(*) AS couleurs_de_yeux FROM stagiaires;
+SELECT COUNT(DISTINCT yeux) AS couleurs_de_yeux FROM stagiaires;
+-- DISTINCT : enlève les doublons. Trie par espèce, sorte. Va donner le nbr de sorte différent.
 
 --37-- Afficher le prénom et les yeux du stagiaire qui a l'id le plus petit
+SELECT `prenom`, `yeux` FROM stagiaires ORDER BY id ASC LIMIT 1;
+-- ou SELECT MIN(id),prenom, yeux FROM `stagiaires`;
+-- ou SELECT prenom, yeux FROM stagiaires WHERE id = ( SELECT MIN(id) FROM stagiaires );
+-- ou SELECT prenom, yeux FROM stagiaires WHERE ( SELECT MIN(id) FROM stagiaires ) LIMIT 1;
 
 --38-- Afficher le prénom et les yeux du stagiaire qui a l'id le plus grand /!\ c'est une requête imbriquée qu'il faut faire (requête sur le résultat d'une autre requête)
+SELECT prenom, yeux FROM stagiaires WHERE id = ( SELECT MAX(id) FROM stagiaires );
+-- ou SELECT `prenom`, `yeux` FROM stagiaires ORDER BY id DESC LIMIT 1;
 
 --39-- Afficher les stagiaires qui ont les yeux bleu et vert
+SELECT * FROM stagiaires WHERE yeux IN ('bleu', 'vert');
+-- ou SELECT * FROM stagiaires WHERE yeux LIKE "bleu" <> yeux LIKE "vert";
+-- LIKE : trie les chaînes de caractère 
+-- LIKE (%m) : Trie tous les mots qui finissent par un "m"
+-- <> : pour AND car sinon ce n'est pas pris en compte
 
 --40-- A l'inverse maintenant, afficher les stagiaires qui n'ont pas les yeux bleu ni vert
+SELECT * FROM stagiaires WHERE yeux NOT IN ('bleu', 'vert');
+-- ou SELECT * FROM stagiaires WHERE NOT (yeux='bleu'OR yeux='vert');
+-- ou SELECT * FROM stagiaires WHERE yeux!='bleu' AND yeux!='vert';
+-- SELECT * FROM `stagiaires` WHERE yeux <> 'bleu' and yeux <>'vert';
 
---41-- récupérer tous les stagiaires qui ont mangé des bonbons, avec le détail de leurs consommations
+
+-- // Récupérer les données dans plusieurs tables par les jointures "JOIN": https://sql.sh/cours/jointures //
+
+--41-- récupérer tous les stagiaires avec le détail de leurs consommations de bonbons
+-- récupérer tous les stagiaires, même ceux qui n'ont mangé de bonbons, avec le détail de leurs consommations de bonbons
+SELECT * FROM stagiaires LEFT JOIN candisplay ON stagiaires.id = candisplay.id_stagiaire LEFT JOIN bonbons ON bonbons.id = candisplay.id_bonbon;
 
 --42-- récupérer que les stagiaires qui ont mangé des bonbons, avec le détail de leurs consommations
 
