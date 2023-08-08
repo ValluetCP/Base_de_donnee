@@ -36,10 +36,20 @@
 * REQUETES A EFFECTUER dans le SHELL
 */
 
---1-- lister toutes les BDD de PHPMyAdmin
+--0-- Se connecter au serveur MySQL en tant qu'utilisateur
+mysql -u VOTRE_UTILISATEUR -p
+-- ou se connecter au serveur MySQL et sélectionner directement la base de données "haribo"
+mysql -u VOTRE_UTILISATEUR -p haribo
 
+
+--1-- lister toutes les BDD de PHPMyAdmin
+SHOW DATABASES;
 
 --2-- Créer une base de données SQL nommée HARIBO
+CREATE DATABASE nom_de_la_base_de_donnees;
+CREATE DATABASE HARIBO;
+-- Sélectionnez la base de données nouvellement créée pour y travailler dessus :
+USE HARIBO;
 
 --3--
 /**
@@ -50,12 +60,57 @@
 * - couleur des yeux => 30 caractères, requis
 * - genre => homme ou femme, requis
 */
+/* TABLE STAGIAIRES */
+CREATE TABLE stagiaire (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    prenom VARCHAR(100) NOT NULL,
+    yeux VARCHAR(30) NOT NULL,
+    genre ENUM('homme', 'femme') NOT NULL
+);
+-- Explications :
+
+/*Le champ "id" est de type INT et sera auto-incrémenté avec la clé primaire.
+Le champ "prenom" est de type VARCHAR(100) et doit être non nul (NOT NULL).
+Le champ "yeux" est de type VARCHAR(30) et doit être non nul (NOT NULL).
+Le champ "genre" est de type ENUM et ne peut contenir que les valeurs "homme" ou "femme", il doit également être non nul (NOT NULL).*/
+
 
 --4--
 /**
 * insérer dans cette table les informations de votre groupe (faites un copier-coller des lignes ci-dessous) :
 */
 INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Jordan', 'marron','h');
+-- Explications :
+
+/*
+- INSERT INTO est utilisé pour insérer des données dans une table recommandée.
+- stagiaire est le nom de la table dans laquelle nous voulons insérer les données.
+- (prenom, yeux, genre)précisez les colonnes dans lesquelles nous insérons les données.
+- VALUES ('Jean', 'Bleu', 'homme')préciser les valeurs que nous voulons insérer dans les colonnes respectives. Chaque valeur correspond à une colonne dans l'ordre indiqué.
+Si vous souhaitez insérer plusieurs enregistrements en une seule fois, vous pouvez utiliser la syntaxe suivante avec plusieurs ensembles de valeurs séparés par des virgules : */
+INSERT INTO stagiaire (prenom, yeux, genre) VALUES
+    ('Jean', 'Bleu', 'homme'),
+    ('Marie', 'Vert', 'femme'),
+    ('Pierre', 'Marron', 'homme');
+-- Après avoir effectué ces commandes, les données seront insérées dans la table "stagiaire" de la base de données "HARIBO". Vous pouvez vérifier que les données enregistrées ont été insérées en utilisant une requête SELECT pour afficher les données de la table :
+SELECT * FROM stagiaire;
+
+-- Remplir la table stagiaire avec tous les éléments suivants :
+
+INSERT INTO stagiaires (id, prenom, yeux, genre) VALUES (40, 'jhordan', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('MohamedA', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Anas', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('MohamedB', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Mehdi', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Mathieu', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Hakim', 'marron','m');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Sonia', 'marron','f');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Julie', 'marron','f');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Assa', 'marron','f');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Magalie', 'marron','f');
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Yvette', 'marron','f');
+
+
 
 --5--
 /**
@@ -65,12 +120,31 @@ INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Jordan', 'marron','h');
 * - nom => 100 caractères, requis
 * - saveur => 100 caractères, requis
 */
+/* TABLE BONBONS */
+CREATE TABLE bonbons(id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, nom varchar(100) NOT NULL, saveur varchar(100) NOT NULL);
+
 
 --6--
 /**
 * insérer dans cette table des bonbons haribo (faites un copier-coller des lignes ci-dessous) :
 */
 INSERT INTO bonbons (nom, saveur) VALUES ('dragibus', 'mûre');
+
+-- Remplir la table bonbons avec tous les éléments suivants :
+
+INSERT INTO bonbons (nom, saveur) VALUES ('dragibus', 'cola');
+INSERT INTO bonbons (nom, saveur) VALUES ('tagada', 'fraise');
+INSERT INTO bonbons (nom, saveur) VALUES ('bams', 'banane');
+INSERT INTO bonbons (nom, saveur) VALUES ('rotella', 'reglisse');
+INSERT INTO bonbons (nom, saveur) VALUES ('floppys', 'sucre');
+INSERT INTO bonbons (nom, saveur) VALUES ('rainbollows', 'marshmallow');
+INSERT INTO bonbons (nom, saveur) VALUES ('bigharri', 'cerise');
+INSERT INTO bonbons (nom, saveur) VALUES ('oursor', 'fruits');
+INSERT INTO bonbons (nom, saveur) VALUES ('croco', 'fruits');
+INSERT INTO bonbons (nom, saveur) VALUES ('oeufoplat', 'guimauve');
+INSERT INTO bonbons (nom, saveur) VALUES ('flanbotti', 'caramel');
+
+
 --7--
 /**
 * créer une table manger
@@ -81,6 +155,23 @@ INSERT INTO bonbons (nom, saveur) VALUES ('dragibus', 'mûre');
 * - date_manger => type date, requis
 * - quantite => nombre, requis
 */
+/* TABLE BONBON MANGÉS PAR LES STAGIAIRES nommé CANDISPLAY */
+CREATE TABLE candisplay(id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, id_bonbon INT(11) DEFAULT NULL, id_stagiaire INT(11) DEFAULT NULL, date_manger DATE NOT NULL, quantite INT(11) NOT NULL);
+
+-- Remplir la table CANDISPLAY avec tous les éléments suivants :
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (4,7,'2018-12-20', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (1,1,'2018-12-05', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (2,2,'2018-12-03', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (3,3,'2018-12-04', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (5,4,'2018-12-15', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (6,5,'2018-12-18', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (7,6,'2018-12-22', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (8,8,'2018-12-25', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (9,9,'2018-12-24', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (10,10,'2018-12-01', 5);
+INSERT INTO candisplay (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (11,11,'2018-12-06', 5);
+
+
 
 --8--
 /**
@@ -88,17 +179,40 @@ INSERT INTO bonbons (nom, saveur) VALUES ('dragibus', 'mûre');
 */
 INSERT INTO manger (id_bonbon, id_stagiaire, date_manger, quantite) VALUES (4,7,'2018-09-20', 5);
 
---9-- Lister les tables de la BDD *haribo*
 
---10-- voir les paramètres de la table *bonbon*
+--9-- Lister les tables de la BDD *haribo*
+-- si nous ne sommes pas déjà dans la bbd *haribo*
+mysql -u VOTRE_UTILISATEUR -p haribo
+-- puis utilisez la commande SQL SHOW TABLES pour afficher la liste des tables contenues dans cette base de données
+SHOW TABLES;
+
+
+--10-- voir les paramètres (structure) de la table MySQL *bonbon*, vous pouvez utiliser la commande SQL DESCRIBE ou SHOW COLUMNS FROM
+DESCRIBE nom_de_la_table;
+-- Explication : Cette commande affichera les informations concernant les colonnes de la table, y compris le nom de la colonne, le type de données, s'il s'agit d'une clé primaire, s'il autorise les valeurs NULL, etc.
+SHOW COLUMNS FROM nom_de_la_table;
+-- Explication : Ces deux commandes SQL vous permettent d'afficher les paramètres et la structure de la table affichée dans la base de données MySQL. Vous pouvez utiliser l'une ou l'autre de ces commandes en fonction de votre préférence.
+
+
 
 --11-- Sélectionner tous les champs de tous les enregistrements de la table *stagiaire*
+SELECT * FROM stagiaires;
+-- Cette commande récupérera toutes les colonnes (champs) de tous les enregistrés (lignes) présents dans la table "stagiaires".
+
 
 --12-- Rajouter un nouveau stagiaire *Patriiiick* en forçant la numérotation de l'id
+INSERT INTO stagiaires (id, prenom, yeux, genre) VALUES ('35', 'Patriiiick', 'marron', 'm');
+
 
 --13-- Rajouter un nouveau stagiaire *Mila* SANS forcer la numérotation de l'id
+INSERT INTO stagiaires (prenom, yeux, genre) VALUES ('Mila', 'bleu', 'f');
+
 
 --14-- Changer le prénom du stagiaire qui a l'id 100 de *Patriiiick* à *Patrick*
+UPDATE stagiaires
+SET prenom = 'Patrick'
+WHERE id = 100;
+
 
 --15-- Rajouter dans la table manger que Patrick a mangé 5 Tagada purpule le 15 septembre
 
